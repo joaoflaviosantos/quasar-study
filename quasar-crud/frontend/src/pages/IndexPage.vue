@@ -13,7 +13,7 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
-import { api } from 'boot/axios'
+import postsService from "src/services/posts"
 
 export default defineComponent({
   name: "IndexPage",
@@ -27,18 +27,20 @@ export default defineComponent({
       { name: 'actions', field: 'actions', label: 'Actions', sortable: false, align: 'left' }
     ];
 
-    onMounted(() => {
-      getPost();
-    });
+    const { list } = postsService();
 
     const getPost = async () => {
       try {
-        const { data } = await api.get('posts');
+        const data = await list();
         posts.value = data;
       } catch (error) {
         console.log(error);
       }
     };
+
+    onMounted(() => {
+      getPost();
+    });
 
     return {
       posts,
