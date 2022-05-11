@@ -7,12 +7,17 @@
       :columns="columns"
       row-key="name"
       >
-      <!--<template v-slot:body-cell-actions="props">-->
-      <template #body-cell-actions="props">
-      <q-td :props="props">
-      <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeletePost(props.row.id)"/>
-      </q-td>
-      </template>
+        <template #top>
+          <span class="text-h5">Posts</span>
+          <q-space />
+          <q-btn color="primary" label="Add Post" :to="{ name: 'formPost' }" />
+        </template>
+        <!--<template v-slot:body-cell-actions="props">-->
+        <template #body-cell-actions="props">
+          <q-td :props="props">
+          <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeletePost(props.row.id)"/>
+          </q-td>
+        </template>
       </q-table>
     </div>
   </q-page>
