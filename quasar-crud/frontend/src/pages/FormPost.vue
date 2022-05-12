@@ -3,7 +3,6 @@
     <div class="q-pa-md">
       <q-form
       @submit="onSubmit"
-      @reset="onReset"
       class="row q-col-gutter-md"
       >
         <q-input
@@ -51,33 +50,49 @@
 
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import postsService from "src/services/posts"
 import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 export default defineComponent ({
   name: "FormPost",
 
   setup() {
 
+    const { post, getById, update } = postsService()
     const $q = useQuasar()
-
     const router = useRouter()
-
+    const route = useRoute()
     const form = ref({
       title: '',
       author: '',
       content: ''
     })
 
-    const { post } = postsService()
+    onMounted( async () => {
+      if (route.params.id) {
+        try {
+          const response = await getById(route.params.id)
+          form.value = response
+        } catch (error) {
+          router.push({ name: "home" })
+        }
+      }
+    })
 
     const onSubmit = async () => {
       try {
-        await post(form.value)
-        $q.notify({ message: `Post successfully created!`, color: 'positive', icon: 'check' })
-        router.push({ name: "home" })
+        if (form.value.id) {
+          await update(form.value)
+          $q.notify({ message: `Post ${form.value.id} successfully updated!`, color: 'positive', icon: 'check' })
+          router.push({ name: "home" })
+        } else {
+          await post(form.value)
+          $q.notify({ message: `Post successfully created!`, color: 'positive', icon: 'check' })
+          router.push({ name: "home" })
+        }
+
       } catch (error) {
         alert(error)
       }

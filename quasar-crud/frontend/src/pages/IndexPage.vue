@@ -13,8 +13,9 @@
           <q-btn color="primary" label="Add Post" :to="{ name: 'formPost' }" />
         </template>
         <!--<template v-slot:body-cell-actions="props">-->
-        <template #body-cell-actions="props">
-          <q-td :props="props">
+        <template #body-cell-actions="props" >
+          <q-td :props="props" class="q-gutter-sm">
+          <q-btn icon="edit" color="warning" dense size="sm" @click="handleEditPost(props.row.id)"/>
           <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeletePost(props.row.id)"/>
           </q-td>
         </template>
@@ -27,12 +28,15 @@
 import { defineComponent, ref, onMounted } from "vue";
 import postsService from "src/services/posts"
 import { useQuasar } from 'quasar'
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "IndexPage",
   setup() {
 
     const $q = useQuasar()
+
+    const router = useRouter()
 
     const columns = [
       { name: 'id', field: 'id', label: 'Id', sortable: true, align: 'left' },
@@ -77,10 +81,19 @@ export default defineComponent({
       }
     }
 
+    const handleEditPost = async (id) => {
+      try {
+        router.push({ name: 'formPost', params: { id } })
+      } catch (error) {
+        $q.notify({ message: `Could not edit Post ${id}`, color: 'negative', icon: 'times' })
+      }
+    }
+
     return {
       posts,
       columns,
-      handleDeletePost
+      handleDeletePost,
+      handleEditPost
     };
 
   },

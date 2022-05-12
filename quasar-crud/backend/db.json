@@ -16,13 +16,19 @@
       "id": 3,
       "title": "Curso Quasar Crud",
       "author": "João Flávio",
-      "content": "Este é um artigo sobre Vue, Quasar, Axios e API Rest."
+      "content": "Este é um artigo sobre Vue, Quasar, Axios e API Rest. Teste de update."
     },
     {
       "title": "Curso Quasar Crud",
       "author": "Patrick Monteiro",
       "content": "Curso Quasar <b>Crud</b>",
       "id": 4
+    },
+    {
+      "title": "Teste",
+      "author": "João",
+      "content": "Este é um teste de Update 2.",
+      "id": 5
     }
   ]
 }
